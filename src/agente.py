@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 # CONFIGURANDO MODELO
 
-MODELO = 'llama3.1:8b'
+MODELO = 'llama3.2:3b'
 
 # Instanciando LLM e configurano parametros
 llm = ChatOllama(model = MODELO, temperature = 0, num_ctx = 8192)
@@ -33,16 +33,3 @@ def classificar(subject: str, body: str) -> Veredito:
         ('system', SISTEMA),
         ('user', f'<email>\nAssunto: {subject}\n\n{body[:6000]}\n</email>'),
     ])
-
-if __name__ == '__main__':
-    exemplos = [
-        # ENRON SPAM
-        ('delivery status notification ( failure ),', 'this is an automatically generated delivery status notification . delivery to the following recipients failed . info @ simplythankyou . com'),
-        # ENRON LEGITIMO
-        ('dave', 'we would like to thank you and your team for great preparation and execution of our prc . john and louise'),
-        # NAZARIO PHISHING
-        ('alert', 'this is an automated email, please do not reply dear client we ve noticed that some of your account information appears to be missing or incorrect we need to verify your account information in order to continue using your apple id, please verify your account information by clicking on the link belowclick here to verify your id thanks for choosing apple,apple team © 2015 apple. all rights reserved. email id: 163327'),
-    ]
-    for assunto, corpo in exemplos:
-        v = classificar(assunto, corpo)
-        print(f'{v.classificacao} {v.confianca} | {v.justificativa[:100]}')
