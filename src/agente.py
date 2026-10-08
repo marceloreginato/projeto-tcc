@@ -16,7 +16,6 @@ class Veredito(BaseModel):
     indicadores: list[str] = Field(description='Sinais concretos encontrados no e-mail; lista vazia se não houver')
     justificativa: str = Field(description='Raciocínio curto, em português, antes da decisão')
     classificacao: Literal['legitimo', 'spam', 'phishing']
-    confianca: int = Field(ge=0, le=100, description= 'Certeza na classificação, de 0 a 100 (50 = dúvida, 100 = certeza total)')
 
 SISTEMA = '''Você é um analista de segurança que faz triagem de e-mails.
 Classifique o e-mail entre as tags <email> em uma de três classes:
