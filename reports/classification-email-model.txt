@@ -1,0 +1,9 @@
+    legitimo       0.53      0.90      0.67        20
+    phishing       0.67      0.60      0.63        20
+        spam       0.86      0.30      0.44        20
+
+    accuracy                           0.60        60
+   macro avg       0.51      0.45      0.44        60
+weighted avg       0.68      0.60      0.58        60
+
+ollama version is 0.40.0
