@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 MODELO = 'llama3.2:3b'
 
 # Instanciando LLM e configurano parametros
-llm = ChatOllama(model = MODELO, temperature = 0, num_ctx = 8192)
+llm = ChatOllama(model = MODELO, temperature = 0, num_ctx = 8192, num_predict=1024, client_kwargs={'timeout': 300})
 
 # CLASSIFICADOR LLM SEM FERRAMENTAS
 
