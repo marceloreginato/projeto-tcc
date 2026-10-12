@@ -1,10 +1,13 @@
+# Bibliotecas necessárias
 import re
 import pandas as pd
 import numpy as np
-import settings
 from functools import lru_cache
+# Arquivos necessários
+import settings
 import joblib
 
+# Definição de constantes
 PADRAO_URL = re.compile(r'(?:https?\s*:\s*/\s*/|www\s*\.)', re.IGNORECASE)
 PADRAO_MIME = r'content-type:\s*\S+(?:;\s*\S+)*|content-transfer-encoding:\s*\S+|mime-version:?\s*\S*|------=_\S*|boundary=\S*'
 LIMITE_CARACTERES = 20000
@@ -34,5 +37,4 @@ def pontuar(subject, body):
     modelo = carregar_modelo()
     X = preparar_entrada(pd.DataFrame([{'subject': subject, 'body': body}]))
     probabilidade = modelo.predict_proba(X)[0, 1]
-
-    return probabilidade
+    return float(probabilidade)
