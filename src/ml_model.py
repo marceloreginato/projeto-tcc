@@ -35,4 +35,4 @@ def pontuar(subject, body):
     X = preparar_entrada(pd.DataFrame([{'subject': subject, 'body': body}]))
     probabilidade = modelo.predict_proba(X)[0, 1]
 
-    return {'probabilidade': float(probabilidade)}
+    return probabilidade
