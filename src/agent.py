@@ -63,4 +63,5 @@ def classificar_com_ferramentas(subject: str, body: str):
                  + f'\n\nConclusão da investigação: {conclusao}'
                  + '\n\nDê o veredito final, coerente com as evidências acima.'),
     ])
+    # Retorna tamanho de sídas para traquear o número de chamadas da ferramenta
     return veredito, len(saidas)
