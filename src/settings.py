@@ -1,5 +1,7 @@
+# Bibliotecas necessárias
 from pathlib import Path
 
+# Definição de caminhos
 RAIZ = Path(__file__).resolve().parent.parent
 CAMINHO_MODELO_ML = RAIZ / 'model' / 'risk_model.joblib'
 CAMINHO_IDS_TESTE = RAIZ / 'data' / 'processed' / 'test_ids.csv'
@@ -11,4 +13,7 @@ MODELO = 'llama3.2:3b'
 NUM_TOKENS = 1024
 
 # Número máximo de segundos para cada resposta
-TEMPO_MAX = {'timeout': 300}
+MAX_TEMPO = {'timeout': 300}
+
+# Número máximo de iterações do agente
+MAX_PASSOS = 10
