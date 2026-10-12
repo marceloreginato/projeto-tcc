@@ -1,3 +1,9 @@
+from pathlib import Path
+
+RAIZ = Path(__file__).resolve().parent.parent
+CAMINHO_MODELO_ML = RAIZ / 'model' / 'risk_model.joblib'
+CAMINHO_IDS_TESTE = RAIZ / 'data' / 'processed' / 'test_ids.csv'
+
 # Modelo utilizado
 MODELO = 'llama3.2:3b'
 
