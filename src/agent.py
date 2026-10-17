@@ -8,6 +8,7 @@ from langchain_core.messages import ToolMessage
 import settings
 import prompts
 import tools
+import ml_model
 
 # Formatando e-mail para análise do agente para casos de teste em ambiente real
 def formatar_email(subject, body):
@@ -19,18 +20,23 @@ llm = ChatOllama(model = settings.MODELO, temperature = 0, num_ctx = 8192,
 
 # Definição do formato de resposta
 class Veredito(BaseModel):
-    indicadores: list[str] = Field(description='Sinais concretos encontrados no e-mail; lista vazia se não houver')
-    justificativa: str = Field(description='Raciocínio curto, em português, antes da decisão')
+    # indicadores: list[str] = Field(description='Sinais concretos encontrados no e-mail; lista vazia se não houver')
+    # justificativa: str = Field(description='Raciocínio curto, em português, antes da decisão')
     classificacao: Literal['legitimo', 'spam', 'phishing']
 
+class VereditoMalicioso(BaseModel):
+    classificacao: Literal['spam', 'phishing']
+
 classificador = llm.with_structured_output(Veredito)
+
+classificador_malicioso = llm.with_structured_output(VereditoMalicioso)
 
 # Função para realizar classificação de e-mails apenas com LLM puro
 def classificar(subject: str, body: str) -> Veredito:
     # Realizando decisão estruturada
     return classificador.invoke([
         ('system', prompts.SISTEMA),
-        ('user', f'<email>\nAssunto: {subject}\n\n{body[:6000]}\n</email>'),
+        ('user', formatar_email(subject, body)),
     ])
 
 # Função para realizar classificação de e-mails com LLM em conjunto com score de risco
@@ -65,3 +71,16 @@ def classificar_com_ferramentas(subject: str, body: str):
     ])
     # Retorna tamanho de sídas para traquear o número de chamadas da ferramenta
     return veredito, len(saidas)
+
+# Função para classificação em modelo híbrido
+def classificar_hibrido(subject, body, baixo=0.20, alto=0.80):
+    p = ml_model.pontuar(subject, body)
+    if p < baixo:
+        return 'legitimo', 'ml', p
+    entrada_formatada = formatar_email(subject, body)
+    if p >= alto:
+        v = classificador_malicioso.invoke([('system', prompts.SISTEMA), ('user', entrada_formatada
+            + '\n\nO e-mail já foi considerado malicioso. Decida se é spam ou phishing.')])
+        return v.classificacao, 'llm_binario', p
+    v = classificar(subject, body)
+    return v.classificacao, 'agente', p
