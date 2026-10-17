@@ -57,6 +57,5 @@ with open(saida, 'a', newline='', encoding='utf-8') as f:
                 'score_ml': round(score, 4), 'caminho': caminho})
         
         f.flush()
-        print(f'Número de e-mails rodados: {conta_emails} / {3 * args.n}\n')
         if k % 25 == 0:
             print(f'{k}/{len(amostra)}', flush=True)
